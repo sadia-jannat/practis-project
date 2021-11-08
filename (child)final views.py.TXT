@@ -1,0 +1,46 @@
+from django.shortcuts import render
+
+# Create your views here.
+from django.http import HttpResponse
+from django.shortcuts import render
+from .forms import StudentReg
+
+from .models import User
+
+
+
+
+def home(request):
+    return HttpResponse("sadia")
+    
+def indexpage(request):
+  if request.method=='POST':
+      fm=StudentReg(request.POST)
+      if fm.is_valid():
+          nm=fm.cleaned_data['name'] 
+          em=fm.cleaned_data['email'] 
+          pw=fm.cleaned_data['password'] 
+          reg=User(name=nm, email=em, password=pw)
+          reg.save()
+  else:
+      fm=StudentReg()  
+
+  stud= User.objects.all() 
+  return render(request,"index.html", {'form':fm, 'stu':stud})  
+
+def userform(request):
+    ans=0
+    try:
+       if request.method=="POST":
+        n1=int(request.POST.get('num1'))
+        n2 = int(request.POST.get('num2'))
+        ans=n1+n2
+
+    except:
+        pass
+    return render(request,"userform.html",  {'output':ans}) 
+
+    
+def test(request):
+    tes=User.objects.all()
+    return render(request, "test.html", {'te':tes})    

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph.</p>
+
+<form action="" method="POST">
+{% csrf_token %}
+{{form.as_p}}
+<input type="submit" value="ADD">
+</form>
+
+<div>
+{% if stu %}
+<h4>table</h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Password</th>
+    </tr>
+  </thead>
+  <tbody>
+  {%for st in stu %}
+    <tr>
+      <th scope="row">{{st.id}}</th>
+      <td>{{st.name}}</td>
+      <td>{{st.email}}</td>
+      <td>{{st.password}}</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+
+{% else %}
+<h4>table not here</h4>
+{% endif %}
+</div>
+
+
+</body>
+</html>
