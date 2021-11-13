@@ -1,0 +1,84 @@
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render
+
+# Create your views here.
+from django.http import HttpResponse
+from django.shortcuts import render
+from .forms import StudentReg
+
+from .models import User
+
+
+
+
+def home(request):
+    return HttpResponse("sadia")
+
+# table create add and show    
+def indexpage(request):
+  if request.method=='POST':
+      fm=StudentReg(request.POST)
+      if fm.is_valid():
+          nm=fm.cleaned_data['name'] 
+          em=fm.cleaned_data['email'] 
+          pw=fm.cleaned_data['password'] 
+          reg=User(name=nm, email=em, password=pw)
+          reg.save()
+  else:
+      fm=StudentReg()  
+
+  stud= User.objects.all() 
+  return render(request,"index.html", {'form':fm, 'stu':stud})  
+
+# this is another tutorial page
+def userform(request):
+    ans=0
+    try:
+       if request.method=="POST":
+        n1=int(request.POST.get('num1'))
+        n2 = int(request.POST.get('num2'))
+        ans=n1+n2
+
+    except:
+        pass
+    return render(request,"userform.html",  {'output':ans}) 
+
+#top index page table show in this page    
+def test(request):
+    tes=User.objects.all()
+    return render(request, "test.html", {'te':tes})    
+
+
+
+#delete option create method for index page
+def delete_data(request,id):
+    if request.method == 'POST':
+        pi=User.objects.get(pk=id)
+        pi.delete()
+        return HttpResponseRedirect('/')
+
+
+#delete option create method for test page
+def delete_data(request,id):
+    if request.method == 'POST':
+        pi=User.objects.get(pk=id)
+        pi.delete()
+        return HttpResponseRedirect('/test')
+
+        
+
+
+
+#update data from edit page,retrive and save
+def update_data(request, id):
+    if request.method == 'POST':
+         pi=User.objects.get(pk=id)
+         fm=StudentReg(request.POST, instance=pi)
+         if fm.is_valid():
+             fm.save()  
+
+    else:
+           pi=User.objects.get(pk=id)
+           fm=StudentReg(instance=pi)
+            
+    return render(request, 'edit.html', {'form':fm})

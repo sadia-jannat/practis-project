@@ -1,0 +1,21 @@
+from django.contrib import admin
+from django.urls import path
+
+from final import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+   
+    #bellow path not related our main path
+    path('homepage/',views.home), 
+
+    path('',views.indexpage, name='indexpage'),
+    path('userform/',views.userform),
+
+    path('test/',views.test),
+
+    path('delete/<int:id>/', views.delete_data, name="deletedata"),
+
+    path('<int:id>/', views.update_data, name="updatedata"),
+   
+]
